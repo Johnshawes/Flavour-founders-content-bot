@@ -7,6 +7,7 @@ Flavour Founders Content Bot
 """
 
 import os
+import re
 import logging
 import httpx
 import anthropic
@@ -180,12 +181,118 @@ async def generate_content() -> str:
     return output
 
 
+# ── Slack Block Kit formatting ─────────────────────────────────────────────
+def build_slack_blocks(content: str) -> list:
+    """Parse content brief into Slack Block Kit blocks."""
+    blocks = [
+        {
+            "type": "header",
+            "text": {"type": "plain_text", "text": "🎬 Flavour Founders — Daily Reel Brief"}
+        },
+        {"type": "divider"}
+    ]
+
+    # Split on --- dividers
+    sections = re.split(r'\n---\n?', content)
+
+    for section in sections:
+        section = section.strip()
+        if not section:
+            continue
+
+        # Detect hook sections (HOOK A, HOOK B, HOOK C)
+        hook_match = re.match(r'^(HOOK [A-C])\b', section)
+        if hook_match:
+            hook_name = hook_match.group(1)
+            hook_body = section[len(hook_name):].strip()
+
+            # Extract the on-screen text lines
+            lines = hook_body.split('\n')
+            screen_lines = []
+            detail_lines = []
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    continue
+                if line.startswith(('Line 1:', 'Line 2:')):
+                    screen_lines.append(line.split(':', 1)[1].strip())
+                elif line.startswith('→'):
+                    detail_lines.append(line.lstrip('→ ').strip())
+
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": f"*{hook_name}*"}
+            })
+            if screen_lines:
+                blocks.append({
+                    "type": "section",
+                    "text": {"type": "mrkdwn", "text": "```\n" + "\n".join(screen_lines) + "\n```"}
+                })
+            if detail_lines:
+                blocks.append({
+                    "type": "section",
+                    "text": {"type": "mrkdwn", "text": "\n".join(f"→ {dl}" for dl in detail_lines)}
+                })
+            blocks.append({"type": "divider"})
+            continue
+
+        # Detect title line (🎬 DAILY REEL BRIEF / ANGLE:)
+        if section.startswith('🎬') or section.startswith('ANGLE:'):
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": f"*{section}*"}
+            })
+            blocks.append({"type": "divider"})
+            continue
+
+        # Detect caption section
+        if '📝 CAPTION' in section or section.upper().startswith('CAPTION'):
+            caption_text = re.sub(r'^📝\s*CAPTION\s*\n?', '', section, flags=re.IGNORECASE).strip()
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": "*📝 CAPTION*"}
+            })
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": caption_text[:3000]}
+            })
+            blocks.append({"type": "divider"})
+            continue
+
+        # Detect hashtags section
+        if '#️⃣' in section or 'HASHTAGS' in section.upper():
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": f"*#️⃣ HASHTAGS*\n{section.replace('#️⃣ HASHTAGS', '').strip()}"}
+            })
+            blocks.append({"type": "divider"})
+            continue
+
+        # Detect WHY THIS REEL section
+        if 'WHY THIS REEL' in section.upper():
+            why_text = re.sub(r'^WHY THIS REEL[^\n]*\n?', '', section, flags=re.IGNORECASE).strip()
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": f"*📌 WHY THIS REEL THIS WEEK*\n{why_text}"}
+            })
+            continue
+
+        # Fallback — render as plain section
+        if len(section) > 10:
+            blocks.append({
+                "type": "section",
+                "text": {"type": "mrkdwn", "text": section[:3000]}
+            })
+
+    return blocks
+
+
 # ── Slack delivery ─────────────────────────────────────────────────────────
 async def deliver_content(content: str):
+    blocks = build_slack_blocks(content)
     payload = {
-        "text": f"*Flavour Founders Content Bot*\n{content}",
-        "content": content,
-        "generated_at": datetime.now().isoformat()
+        "text": f"Flavour Founders Content Bot — Daily Reel Brief",
+        "blocks": blocks,
     }
     async with httpx.AsyncClient(timeout=30) as http:
         try:
