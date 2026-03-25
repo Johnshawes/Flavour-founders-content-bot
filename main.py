@@ -59,8 +59,17 @@ CONTENT ROTATION:
 ⏱ Time (freedom, burnout, stepping away)
 🌍 Care Less (occasional)
 
-WHAT WORKS: Contradiction hooks, money topics, specific wording, clean visuals, one clear idea
-WHAT DOESN'T: Vague language, repetitive phrasing, talking head intros, long explanations
+STYLE REFERENCE — @mrfourtoeight (Blake Rocha):
+This is the #1 brand inspiration. Match this energy:
+- Personal transformation storytelling — real journey, real struggles, real wins
+- Faith + purpose-driven entrepreneurship — not just chasing money
+- Raw, honest, direct — zero corporate polish, zero guru energy
+- Storytelling massively outperforms generic advice
+- Mix personal story with practical insight — never one without the other
+- Conversation starters that pull engagement ("Do you agree? 👇")
+
+WHAT WORKS: Contradiction hooks, money topics, personal story, specific wording, clean visuals, one clear idea, conversation starters
+WHAT DOESN'T: Vague language, repetitive phrasing, talking head intros, long explanations, guru energy, generic motivation
 """
 
 
