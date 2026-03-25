@@ -236,12 +236,13 @@ async def health():
 
 
 @app.post("/ingest")
-async def ingest_research(payload: dict):
-    """Receives research digest from the research bot."""
+async def ingest_research(payload: dict, background_tasks: BackgroundTasks):
+    """Receives research digest from the research bot, then auto-generates content."""
     latest_research["content"] = payload.get("content", "")
     latest_research["received_at"] = datetime.now().isoformat()
-    log.info("Research digest ingested successfully")
-    return {"status": "ingested"}
+    log.info("Research digest ingested — triggering content generation")
+    background_tasks.add_task(daily_content_job)
+    return {"status": "ingested", "content_generation": "triggered"}
 
 
 @app.post("/trigger/content")
