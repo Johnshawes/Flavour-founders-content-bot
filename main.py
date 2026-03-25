@@ -110,10 +110,28 @@ Line 2: [sharpest contradiction]
 
 ---
 📝 CAPTION
-[2-3 sentences max. Direct, no fluff. Expands the hook insight. Ends with a question or call to action.]
+Write a full caption following this MANDATORY structure in order:
+
+1. HOOK — strong scroll-stopping first line, repeats reel hook, contradiction format
+2. RELATABILITY — personal experience line, feels real ("I did this for YEARS.")
+3. SCENARIO BUILD — paint a quick picture, then contrast with "But there's no money left."
+4. AUTHORITY — include naturally: "After building not one, but TWO 7-figure food businesses… with another on the way…"
+5. CORE INSIGHT — one clear lesson (Revenue ≠ profit / Margins decide everything)
+6. BREAKDOWN — 3-4 short bullet points
+7. CONSEQUENCE — what happens if not fixed
+8. RESOLUTION — the shift ("Once I fixed this…")
+9. FINAL LINE — strong and memorable
+10. CTA — only sometimes ("Comment 'FOCUS'")
+
+Caption writing rules:
+- Short lines, lots of spacing, mobile readable
+- CAPITALS for emphasis (not overused)
+- Direct, honest, slightly confrontational
+- Never robotic or guru-sounding
+- Goal: reader thinks 'This is literally me'
 
 #️⃣ HASHTAGS
-[8-10 relevant hashtags for food business/entrepreneur niche]
+#bakerybusiness #foodbusiness #entrepreneurmindset #hospitalitybusiness
 
 ---
 WHY THIS REEL THIS WEEK
