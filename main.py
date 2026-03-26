@@ -9,6 +9,7 @@ Flavour Founders Content Bot
 import os
 import re
 import logging
+from pathlib import Path
 import httpx
 import anthropic
 
@@ -37,15 +38,19 @@ latest_research = {"content": "", "received_at": ""}
 # ── Anthropic client ───────────────────────────────────────────────────────
 client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
+# ── Load shared founder profile ──────────────────────────────────────────────
+_PROFILE_PATH = Path(__file__).parent / "founder-profile.txt"
+try:
+    _FOUNDER_PROFILE = _PROFILE_PATH.read_text(encoding="utf-8").strip()
+except FileNotFoundError:
+    _FOUNDER_PROFILE = "John Hawes — UK food and hospitality entrepreneur running KNEAD, Watermoor Meat Supply Ltd, and Flavour Founders."
+    log.warning("founder-profile.txt not found — using fallback bio")
+# ─────────────────────────────────────────────────────────────────────────────
+
 # ── Prompt ─────────────────────────────────────────────────────────────────
-BRAND_CONTEXT = """
+BRAND_CONTEXT = f"""
 WHO YOU ARE WRITING FOR:
-John Hawes — a UK food and hospitality entrepreneur who CURRENTLY runs a multi-company group:
-- CEO of KNEAD — a multi-site bakery and hospitality brand with 5 sites, a central production unit, and a bakery van. On track for nearly £5M revenue this year.
-- Director of Watermoor Meat Supply Ltd (trading as Jesse Smith) — a wholesale and catering butchery business turning over £10M+ as part of the wider group.
-- Founder of Flavour Founders — a high-ticket education programme helping bakery and café owners get profitable.
-- LARDON — a new European small plates restaurant launching June 2026.
-He has NOT sold any of these businesses. He still runs them daily. Real experience, hard lessons, no theory.
+{_FOUNDER_PROFILE}
 
 PERSONAL BRAND PILLARS:
 1. Food & Drink Business (PRIMARY) — bakery/café growth, profit, margins, labour, systems, scaling
