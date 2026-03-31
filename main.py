@@ -94,7 +94,9 @@ Today is {today}.
 Here is today's research digest:
 {research_digest if research_digest else "No research digest available — use your knowledge of UK food business trends."}
 
-Based on the strongest insight from the research digest, generate TODAY'S REEL BRIEF.
+PRIORITY RULE: If the research digest contains a "JOHN'S IDEAS — VALIDATED" section with 🟢 Strong ideas, you MUST base today's reel on one of those ideas. John's own ideas always take priority over general research. Only fall back to research insights if no ideas were submitted or all were rated 🔴 Skip.
+
+Based on the strongest insight from the research digest (or John's top-rated idea), generate TODAY'S REEL BRIEF.
 
 Output EXACTLY in this format:
 
